@@ -1,6 +1,18 @@
 const express = require('express');
-
+const mongoose = require('mongoose');
+require('dotenv').config();
 const app = express();
+const Thing = require('./models/thing');
+const thing = require('./models/thing');
+
+mongoose.connect(process.env.MONGO_URI,
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+app.use(express.json());
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -8,274 +20,39 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/books', (req, res, next) => {
-  const books = [
-    [{
-  "id": "1",
-  "userId" : "clc4wj5lh3gyi0ak4eq4n8syr",
-  "title" : "Milwaukee Mission",
-  "author": "Elder Cooper",
-  "imageUrl" : "https://via.placeholder.com/206x260",
-  "year" : 2021,
-  "genre" : "Policier",
-  "ratings" : [{
-    "userId" : "1",
-    "grade": 5
-  },
-    {
-      "userId" : "1",
-      "grade": 5
-    },
-    {
-      "userId" : "clc4wj5lh3gyi0ak4eq4n8syr",
-      "grade": 5
-    },
-    {
-      "userId" : "1",
-      "grade": 5
-    }],
-  "averageRating": 3
-},
-  {
-    "id": "2",
-    "userId" : "clbxs3tag6jkr0biul4trzbrv",
-    "title" : "Book for Esther",
-    "author": "Alabaster",
-    "imageUrl" : "https://via.placeholder.com/206x260",
-    "year" : 2022,
-    "genre" : "Paysage",
-    "ratings" : [{
-      "userId" : "clbxs3tag6jkr0biul4trzbrv",
-      "grade": 4
-    },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      }],
-    "averageRating": 4.2
-  },
-  {
-    "id": "3",
-    "userId" : "1",
-    "title" : "The Kinfolk Table",
-    "author": "Nathan Williams",
-    "imageUrl" : "https://via.placeholder.com/206x260",
-    "year" : 2022,
-    "genre" : "Cuisine",
-    "ratings" : [{
-      "userId" : "1",
-      "grade": 5
-    },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      }],
-    "averageRating": 3
-  },
-  {
-    "id": "4",
-    "userId" : "1",
-    "title" : "Milwaukee Mission",
-    "author": "Elder Cooper",
-    "imageUrl" : "https://via.placeholder.com/206x260",
-    "year" : 2021,
-    "genre" : "Policier",
-    "ratings" : [{
-      "userId" : "1",
-      "grade": 5
-    },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      }],
-    "averageRating": 3
-  },
-  {
-    "id": "5",
-    "userId" : "1",
-    "title" : "Book for Esther",
-    "author": "Alabaster",
-    "imageUrl" : "https://via.placeholder.com/206x260",
-    "year" : 2022,
-    "genre" : "Paysage",
-    "ratings" : [{
-      "userId" : "1",
-      "grade": 5
-    },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      }],
-    "averageRating": 4
-  },
-  {
-    "id": "6",
-    "userId" : "1",
-    "title" : "The Kinfolk Table",
-    "author": "Nathan Williams",
-    "imageUrl" : "https://via.placeholder.com/206x260",
-    "year" : 2022,
-    "genre" : "Cuisine",
-    "ratings" : [{
-      "userId" : "1",
-      "grade": 5
-    },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      }],
-    "averageRating": 3
-  },
-  {
-    "id": "7",
-    "userId" : "1",
-    "title" : "Milwaukee Mission",
-    "author": "Elder Cooper",
-    "imageUrl" : "https://via.placeholder.com/206x260",
-    "year" : 2021,
-    "genre" : "Policier",
-    "ratings" : [{
-      "userId" : "1",
-      "grade": 5
-    },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      }],
-    "averageRating": 3
-  },
-  {
-    "id": "8",
-    "userId" : "clc7s9xnh7zpt0ak4fisdwuj1",
-    "title" : "Book for Esther",
-    "author": "Alabaster",
-    "imageUrl" : "https://via.placeholder.com/206x260",
-    "year" : 2022,
-    "genre" : "Paysage",
-    "ratings" : [{
-      "userId" : "1",
-      "grade": 5
-    },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      }],
-    "averageRating": 4
-  },
-  {
-    "id": "9",
-    "userId" : "clc4wj5lh3gyi0ak4eq4n8syr",
-    "title" : "The Kinfolk Table",
-    "author": "Nathan Williams",
-    "imageUrl" : "https://via.placeholder.com/206x260",
-    "year" : 2022,
-    "genre" : "Cuisine",
-    "ratings" : [{
-      "userId" : "1",
-      "grade": 5
-    },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "1",
-        "grade": 5
-      },
-      {
-        "userId" : "clc4wj5lh3gyi0ak4eq4n8syr",
-        "grade": 1
-      }],
-    "averageRating": 3
-  }
-]
-  ];
-  res.status(200).json(books);
+
+app.post('/api/books', (req,res,next)=>{
+  const thing = new Thing({
+    ...req.body
 });
-app.use('/api/stuff2', (req, res, next) => {
-  const stuff = [
-    {
-      _id: 'test',
-      title: 'Mon premier objet',
-      description: 'Les infos de mon premier objet',
-      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-      price: 4900,
-      userId: 'qsomihvqios',
-    },
-    {
-      _id: 'oeihfzeomoihi',
-      title: 'Mon deuxième objet',
-      description: 'Les infos de mon deuxième objet',
-      imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-      price: 2900,
-      userId: 'qsomihvqios',
-    },
-  ];
-  res.status(200).json(stuff);
+thing.save()
+.then(()=>res.status(201).json({message:'Objet enregistré !' }))
+.cath(error=>res.status(400).json({error}));
 });
 
-app.post('/api/stuffpost', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: 'Objet créé !',
-    idbook: req.body.id
-  });
+app.put('/api/books/:id',(req,res,next) => {
+  Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+  .then(() => res.status(200).json({message: 'Objet modifié !'}) )
+  .catch(error => res.status(400).json({error}) );
+});
+
+app.delete('/api/books/:id',(req,res,next) => {
+  Thing.deleteOne({ _id: req.params.id },)
+  .then(() => res.status(200).json({message: 'Objet supprimé !'}) )
+  .catch(error => res.status(400).json({error}) );
+});
+
+app.get('/api/books/:id',(req,res,next) => {
+  Thing.findOne({_id: req.params.id})
+  .then(thing => res.status(200).json(thing))
+  .cath(error=>res.status(404).json({error}));
+});
+
+app.get('/api/books', (req, res, next) => {
+  Thing.find()
+  .then(things => res.status(200).json(things))
+  .catch(error =>res.status(400).json({error}));
+
 });
 
 module.exports = app;
