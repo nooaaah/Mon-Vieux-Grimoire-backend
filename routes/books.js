@@ -1,6 +1,8 @@
 const express = require('express');
-const router = express.Router();
+const auth = require('auth');
 const booksCtrl = require('../controllers/books');
+const router = express.Router();
+
 
 
 router.use((req, res, next) => {
@@ -11,14 +13,14 @@ router.use((req, res, next) => {
 });
 
 
-router.post('/',booksCtrl.createThing);
+router.post('/', auth, booksCtrl.createThing);
 
-router.put('/:id',booksCtrl.modifyThing);
+router.put('/:id, auth',booksCtrl.modifyThing);
 
-router.delete('/:id',booksCtrl.deleteThing);
+router.delete('/:id', auth,booksCtrl.deleteThing);
 
-router.get('/:id',booksCtrl.getOneThing);
+router.get('/:id', auth,booksCtrl.getOneThing);
 
-router.get('/',booksCtrl.getAllThing );
+router.get('/', auth,booksCtrl.getAllThing );
 
 module.exports = router;
