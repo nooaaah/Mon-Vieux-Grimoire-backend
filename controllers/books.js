@@ -4,10 +4,13 @@ const fs = require('fs');
 
 
 exports.createBook = (req, res, next) => {
+
+  
+  
   const bookObject = JSON.parse(req.body.book);
   const imageFile = req.file;
 
-  if (imageFile.fieldname !== 'image') {
+  if (!imageFile || imageFile.fieldname !== 'image') {
     return res.status(400).json({ error: "Aucune image fournie" });
   }
 
@@ -30,7 +33,7 @@ exports.modifyBook = (req, res, next) => {
 
   const imageFile = req.file;
 
-  if (imageFile.fieldname !== 'image') {
+  if (!imageFile || imageFile.fieldname !== 'image') {
     return res.status(400).json({ error: "Aucune image fournie" });
   }
 
