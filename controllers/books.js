@@ -33,9 +33,7 @@ exports.modifyBook = (req, res, next) => {
 
   const imageFile = req.file;
 
-  if (!imageFile || imageFile.fieldname !== 'image') {
-    return res.status(400).json({ error: "Aucune image fournie" });
-  }
+ 
 
   const bookObject = req.file ? {
     ...JSON.parse(req.body.book),
